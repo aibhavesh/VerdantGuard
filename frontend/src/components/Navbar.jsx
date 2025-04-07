@@ -48,7 +48,7 @@ const Navbar = () => {
             </li>
             <li className="nav-item mx-2">
               <NavLink className="nav-link fw-semibold" to="/contact">
-                contact
+                Contact
               </NavLink>
             </li>
           </ul>
