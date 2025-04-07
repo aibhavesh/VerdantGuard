@@ -22,7 +22,6 @@ function SignUp() {
     onSubmit: (formData) => {
        axios.post(`${API_URL}/signup`, formData)
         .then((response) => {
-          
           navigate("/signin")
           alert("Registration Successful")
           console.log(response.data);

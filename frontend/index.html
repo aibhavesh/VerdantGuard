@@ -1,20 +1,40 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="./public/assets/images/hackathon_logo-removebg-preview.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Verdant Guard</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
-<df-messenger
-  intent="WELCOME"
-  chat-title="Krishi_Sakha"
-  agent-id="b5af0781-b1e7-4994-82ea-8bc192934e20"
-  language-code="en"
-></df-messenger>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verdant Guard</title>
+  <link rel="icon" type="image/svg+xml" href="./public/assets/images/hackathon_logo-removebg-preview.png" />
+  <style>
+    df-messenger {
+      --df-messenger-bot-message: #e0f7e9;
+      --df-messenger-button-titlebar-color: #4caf50;
+      --df-messenger-chat-background-color: #ffffff;
+      --df-messenger-font-color: #000;
+      --df-messenger-send-icon: #4caf50;
+      --df-messenger-user-message: #dcf8c6;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Root div for your React app -->
+  <div id="root"></div>
+
+  <!-- Dialogflow Messenger CDN -->
+  <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+
+  <!-- Dialogflow Web Chat -->
+  <df-messenger
+    intent="WELCOME"
+    chat-title="Krishi_Sakha"
+    agent-id="b5af0781-b1e7-4994-82ea-8bc192934e20"
+    language-code="en"
+    chat-mic="true">
+  </df-messenger>
+
+  <!-- Your app’s JS (if any) -->
+  <script type="module" src="/src/main.jsx"></script>
+
+</body>
 </html>
