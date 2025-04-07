@@ -22,7 +22,7 @@ const HeroSection = () => {
             <p className="quote">“Diagnose. Protect. Prosper.”</p>
             <p className="quote">“Smart Leaf Health Detection at Your Fingertips.”</p>
             <p className="quote">“Detect Early, Act Wisely – AI for Leaf Health.”</p>
-            <NavLink to="/signin" className="btn btn-custom mt-3">
+            <NavLink to="/upload" className="btn btn-custom mt-3">
               Get Analysis Free →
             </NavLink>
           </div>

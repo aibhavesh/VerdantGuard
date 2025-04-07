@@ -46,6 +46,11 @@ const Navbar = () => {
                 About Us
               </NavLink>
             </li>
+            <li className="nav-item mx-2">
+              <NavLink className="nav-link fw-semibold" to="/contact">
+                contact
+              </NavLink>
+            </li>
           </ul>
 
           {/* Right Side Sign In/Up */}

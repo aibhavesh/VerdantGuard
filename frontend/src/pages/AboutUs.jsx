@@ -1,7 +1,7 @@
 import React from 'react';
 import '../../public/assets/bootstrap/css/bootstrap.css';
 import '../App.css';
-
+import { NavLink } from 'react-router-dom';
 const AboutUs = () => {
   return (
     <section className="section text-center">
@@ -38,6 +38,9 @@ const AboutUs = () => {
           We’re crafting a solution to transform lives.<br />
           Because healthy crops mean healthy communities.</p>
         </div>
+      </div>
+      <div>
+       <NavLink to="/data" className="btn btn-primary mt-4">DATA </NavLink>
       </div>
     </section>
   );

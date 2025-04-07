@@ -6,8 +6,10 @@ import leaf_pattern from '../../public/assets/images/green-dust-and-scratches.pn
 import { NavLink } from 'react-router-dom';
 import { useFormik } from 'formik';
 import SignInSchema from '../schema/SignInSchema';
-
+import axios from 'axios';
+ import { API_URL } from '../constant/API_URL.JSX';
 const SignIn = () => {
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -15,9 +17,11 @@ const SignIn = () => {
     },
     validationSchema: SignInSchema,
     onSubmit: (formData) => {
-      console.log(formData);
-      // Add actual submission logic here (e.g., API call)
-    },
+      axios.post(`${API_URL}/signinauth`, formData)
+      .then((response)=>{
+        console.log(response.data);
+      })
+  }
   });
 
   return (

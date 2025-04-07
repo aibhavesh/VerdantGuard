@@ -1,7 +1,7 @@
 import React from 'react';
 import '../../public/assets/bootstrap/css/bootstrap.css';
 import '../App.css';
-
+import { NavLink } from 'react-router-dom';
 const Footer = () => {
   return (
     <footer className="footer bg-light text-center text-lg-start">
@@ -19,16 +19,16 @@ const Footer = () => {
             <h5 className="text-uppercase">Quick Links</h5>
             <ul className="list-unstyled">
               <li>
-                <a href="#" className="text-dark">Home</a>
+                <NavLink to="" className="text-dark">Home</NavLink>
               </li>
               <li>
-                <a href="#" className="text-dark">How it works?</a>
+                <a to="/howitwork" className="text-dark">How it works?</a>
               </li>
               <li>
-                <a href="#" className="text-dark">About Us</a>
+                <NavLink to="/about" className="text-dark">About Us</NavLink>
               </li>
               <li>
-                <a href="#" className="text-dark">Contact</a>
+                <NavLink to="/contact" className="text-dark">Contact</NavLink>
               </li>
             </ul>
           </div>
@@ -37,16 +37,16 @@ const Footer = () => {
             <h5 className="text-uppercase">Follow Us</h5>
             <ul className="list-unstyled">
               <li>
-                <a href="#" className="text-dark">Facebook</a>
+                <NavLink to="www.facebook.com" className="text-dark">Facebook</NavLink>
               </li>
               <li>
-                <a href="#" className="text-dark">Twitter</a>
+                <NavLink to="www.twitter.com" className="text-dark">Twitter</NavLink>
               </li>
               <li>
-                <a href="#" className="text-dark">Instagram</a>
+                <NavLink to="www.instagram.com" className="text-dark">Instagram</NavLink>
               </li>
               <li>
-                <a href="#" className="text-dark">LinkedIn</a>
+                <NavLink to="" className="text-dark">LinkedIn</NavLink>
               </li>
             </ul>
           </div>

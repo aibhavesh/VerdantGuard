@@ -457,3 +457,31 @@ body {
     font-size: 1.1rem;
   }
 }
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f0f8f5;
+}
+
+.contact-info p {
+  margin: 10px 0;
+  color: #333;
+}
+
+h1 {
+  font-size: 36px;
+}
+
+.form-label {
+  font-size: 16px;
+}
+
+textarea, input {
+  border-radius: 10px;
+}
+
+button {
+  border-radius: 10px;
+}
