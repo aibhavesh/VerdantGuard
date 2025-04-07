@@ -1,10 +1,11 @@
+// routes/uploadroutes.js
 import express from "express";
-let routes = express.Router();
-import multer from "multer"
+import { SaveImage, GetImage } from "../controllers/UploadController.js";
+import upload from "../middlewares/multer.js";
 
-const upload = multer({ dest: "../uploads" }); // Save uploaded files to 'uploads/' directory
-routes.post("/upload", );
+const router = express.Router();
 
+router.post("/", upload.single("image"), SaveImage);
+router.get("/", GetImage);
 
-
-export  default routes;
+export default router;

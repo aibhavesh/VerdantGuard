@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 dotenv.config()
-mongoose.connect(process.env.DB_URL)
+mongoose.connect("mongodb://0.0.0.0:27017/bhavesh")
 .then(()=>{
     console.log("LIVE DB CONNECTED")
 })
