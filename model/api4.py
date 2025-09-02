@@ -24,6 +24,18 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def example_function(x, y):
+    """
+    Adds two numbers and returns the result.
+
+    Args:
+        x (int): First number
+        y (int): Second number
+
+    Returns:
+        int: Sum of x and y
+    """
+    return x + y
 
 
 # Load the pre-trained model once when the API starts
