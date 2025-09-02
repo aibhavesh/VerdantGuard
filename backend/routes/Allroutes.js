@@ -12,12 +12,6 @@ routes.use("/api/v1/signup",SignupRoutes)
 routes.use("/", uploadRoutes);
 routes.use("/api/v1/signinauth",SigninauthRoutes)
 routes.use("/api/v1/contactus",ContactusRoutes)
-// backend/routes/UploadRoutes.js
-import { verifyUser } from '../middlewares/authMiddleware.js';
-
-// Aapka existing route
-router.post('/upload', verifyUser, uploadFile);
-
-
+// ...existing code...
 
 export default routes;

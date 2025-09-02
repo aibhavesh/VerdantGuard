@@ -9,7 +9,7 @@ const router = express.Router();
 router.post("/", upload.single("image"), SaveImage);
 
 // Route for uploading file with authentication
-router.post("/upload", verifyUser, uploadFile);
+router.post("/upload", verifyUser, upload.single("image"), uploadFile);
 
 // Route for getting images
 router.get("/", GetImage);

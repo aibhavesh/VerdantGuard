@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import SignUpSchema from '../schema/SignUpSchema';
 import { NavLink } from 'react-router-dom';
 import img from '../../public/assets/images/hackathon_logo-removebg-preview.png';
-import { API_URL } from '../constant/API_URL.JSX';
+import { API_URL } from '../constant/API_URL.jsx';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 function SignUp() {
@@ -20,13 +20,19 @@ function SignUp() {
     },
     validationSchema: SignUpSchema,
     onSubmit: (formData) => {
-       axios.post(`${API_URL}/signup`, formData)
+      // Only send required fields (exclude confirmPassword)
+      const { name, contact, email, username, password, address } = formData;
+      axios.post(`${API_URL}/signup`, { name, contact, email, username, password, address })
         .then((response) => {
-          navigate("/signin")
-          alert("Registration Successful")
+          navigate("/signin");
+          alert("Registration Successful");
           console.log(response.data);
         })
-      // Add actual submission logic here (e.g., API call)
+        .catch((error) => {
+          const msg = error.response?.data?.message || 'Registration failed. Please try again.';
+          alert(msg);
+          console.error('Signup error:', error);
+        });
     },
   });
 

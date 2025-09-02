@@ -4,7 +4,7 @@ import fs from "fs";
 import FormData from "form-data";
 import image from "../models/UploadSchema.js";
 
-const FLASK_API_URL = "http://127.0.0.1:5000/predict";
+const FLASK_API_URL = process.env.FLASK_API_URL || "http://localhost:5000/predict";
 
 const SaveImage = async (req, res) => {
   try {
@@ -13,13 +13,35 @@ const SaveImage = async (req, res) => {
     const { leafType } = req.body;
     if (!leafType) return res.status(400).json({ message: "Leaf type is required." });
 
+    if (!FLASK_API_URL) {
+      console.error("FLASK_API_URL not set in environment");
+      return res.status(500).json({ message: "Server misconfiguration" });
+    }
+
     const formData = new FormData();
     formData.append("image", fs.createReadStream(req.file.path));
     formData.append("leafType", leafType);
 
-    const flaskResponse = await axios.post(FLASK_API_URL, formData, {
-      headers: formData.getHeaders(),
-    });
+    let flaskResponse;
+    let attempt = 0;
+    const maxAttempts = 3;
+    const baseTimeout = 5000;
+    while (attempt < maxAttempts) {
+      try {
+        flaskResponse = await axios.post(FLASK_API_URL, formData, {
+          headers: formData.getHeaders(),
+          timeout: baseTimeout * Math.pow(2, attempt),
+        });
+        break;
+      } catch (err) {
+        attempt++;
+        if (attempt >= maxAttempts) {
+          console.error("Flask API call failed after retries:", err);
+          throw err;
+        }
+        await new Promise(r => setTimeout(r, 500 * Math.pow(2, attempt)));
+      }
+    }
 
     const newImage = new image({
       leafType,
@@ -37,8 +59,7 @@ const SaveImage = async (req, res) => {
   } catch (error) {
     console.error("Error processing image:", error);
     res.status(500).json({
-      message: "Error processing image",
-      error: error.message,
+      message: "Error processing image"
     });
   }
 };

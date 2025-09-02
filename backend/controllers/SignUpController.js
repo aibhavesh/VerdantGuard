@@ -1,28 +1,66 @@
 import Signup from "../models/SignupSchema.js";
-import sha1 from 'sha1'
+import bcrypt from 'bcrypt';
 
 let Fetchuser = async(req, res)=>{
-    let result = await Signup.find();
-    res.send(result);
+    try {
+        let result = await Signup.find();
+        res.send(result);
+    } catch (err) {
+        console.error('Error fetching users:', err);
+        res.status(500).json({ success: false, error: 'Internal server error' });
+    }
 }
 let FetchuserById = async(req, res)=>{
-    let result = await Signup.find({_id : req.params.id });
-    res.send(result);
+    try {
+        let result = await Signup.find({_id : req.params.id });
+        res.send(result);
+    } catch (err) {
+        console.error('Error fetching user by id:', err);
+        res.status(500).json({ success: false, error: 'Internal server error' });
+    }
 }
 let Saveuser = async(req, res)=>{
-    delete req.body.repassword;
-    req.body.password = sha1(req.body.password);
-    
-    let result = await Signup.create(req.body);
-    res.send({success: true, result});
+    try {
+        delete req.body.repassword;
+        if (!req.body.password) {
+            return res.status(400).json({ success: false, error: 'Password is required' });
+        }
+        const saltRounds = 10;
+        req.body.password = await bcrypt.hash(req.body.password, saltRounds);
+        let result = await Signup.create(req.body);
+        res.status(201).json({ success: true, result });
+    } catch (err) {
+        console.error('Error saving user:', err);
+        res.status(500).json({ success: false, error: 'Internal server error' });
+    }
 }
 let Updateuser = async(req, res)=>{
-    let result = await Signup.updateMany({_id : req.params.id }, req.body);
-    res.send({success: true, result});
+    try {
+        let result = await Signup.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true, runValidators: true }
+        );
+        if (!result) {
+            return res.status(404).json({ success: false, error: 'User not found' });
+        }
+        res.json({ success: true, result });
+    } catch (err) {
+        console.error('Error updating user:', err);
+        res.status(500).json({ success: false, error: 'Internal server error' });
+    }
 }
 let Deleteuser = async(req, res)=>{
-    let result = await Signup.deleteMany({_id : req.params.id });
-    res.send({success: true, result});
+    try {
+        let result = await Signup.findByIdAndDelete(req.params.id);
+        if (!result) {
+            return res.status(404).json({ success: false, error: 'User not found' });
+        }
+        res.json({ success: true, result });
+    } catch (err) {
+        console.error('Error deleting user:', err);
+        res.status(500).json({ success: false, error: 'Internal server error' });
+    }
 }
 
 export {Fetchuser,FetchuserById,Saveuser,Updateuser,Deleteuser}

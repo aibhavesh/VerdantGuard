@@ -19,10 +19,10 @@ const Footer = () => {
             <h5 className="text-uppercase">Quick Links</h5>
             <ul className="list-unstyled">
               <li>
-                <NavLink to="" className="text-dark">Home</NavLink>
+                <NavLink to="/" className="text-dark">Home</NavLink>
               </li>
               <li>
-                <a to="/howitwork" className="text-dark">How it works?</a>
+                <NavLink to="/howitworks" className="text-dark">How it works?</NavLink>
               </li>
               <li>
                 <NavLink to="/about" className="text-dark">About Us</NavLink>
@@ -37,16 +37,16 @@ const Footer = () => {
             <h5 className="text-uppercase">Follow Us</h5>
             <ul className="list-unstyled">
               <li>
-                <NavLink to="www.facebook.com" className="text-dark">Facebook</NavLink>
+                <a href="https://www.facebook.com" className="text-dark" target="_blank" rel="noopener noreferrer">Facebook</a>
               </li>
               <li>
-                <NavLink to="www.twitter.com" className="text-dark">Twitter</NavLink>
+                <a href="https://www.twitter.com" className="text-dark" target="_blank" rel="noopener noreferrer">Twitter</a>
               </li>
               <li>
-                <NavLink to="www.instagram.com" className="text-dark">Instagram</NavLink>
+                <a href="https://www.instagram.com" className="text-dark" target="_blank" rel="noopener noreferrer">Instagram</a>
               </li>
               <li>
-                <NavLink to="" className="text-dark">LinkedIn</NavLink>
+                <a href="https://www.linkedin.com" className="text-dark" target="_blank" rel="noopener noreferrer">LinkedIn</a>
               </li>
             </ul>
           </div>

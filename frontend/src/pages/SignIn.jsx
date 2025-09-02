@@ -7,7 +7,7 @@ import { NavLink } from 'react-router-dom';
 import { useFormik } from 'formik';
 import SignInSchema from '../schema/SignInSchema';
 import axios from 'axios';
- import { API_URL } from '../constant/API_URL.JSX';
+import { API_URL } from '../constant/API_URL.jsx';
 const SignIn = () => {
 
   const formik = useFormik({

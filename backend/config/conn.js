@@ -1,13 +1,18 @@
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 dotenv.config()
-mongoose.connect("mongodb://0.0.0.0:27017/bhavesh")
-.then(()=>{
-    console.log("LIVE DB CONNECTED")
+const mongoUri = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/bhavesh";
+const usingEnv = !!process.env.MONGO_URI;
+mongoose.connect(mongoUri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
 })
-.catch((err)=>{
-    console.log("LIVE DB NOT CONNECTED", err)
+.then(() => {
+    console.log(`LIVE DB CONNECTED using ${usingEnv ? 'env MONGO_URI' : 'default URI'}`);
 })
+.catch((err) => {
+    console.error(`LIVE DB NOT CONNECTED (using ${usingEnv ? 'env MONGO_URI' : 'default URI'})`, err);
+});
 
 export default mongoose;
 // mongodb+srv://jamessteppingstone:<db_password>@cluster0.vvaox.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
