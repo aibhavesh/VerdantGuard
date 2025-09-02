@@ -33,6 +33,8 @@ const UploadLeafImage = () => {
         const response = await axios.post(`${API_URL_IMAGE}/predict`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
+        // const response2 = await axios.post({API_URL}/upload , formData, {
+        //   headers: { "Content-Type": "multipart/form-data" },  )
 
         setResult(response.data);
         console.log("Response:", response.data);

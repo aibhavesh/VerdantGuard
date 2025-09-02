@@ -485,3 +485,23 @@ textarea, input {
 button {
   border-radius: 10px;
 }
+
+.helpus-page {
+  background-color: #f6fff6;
+}
+
+.help-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.help-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.helpus-page h1,
+.helpus-page h3,
+.helpus-page h4,
+.helpus-page h5 {
+  font-family: 'Poppins', sans-serif;
+}
