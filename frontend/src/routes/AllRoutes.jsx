@@ -8,7 +8,8 @@ import SignUp from '../pages/SignUp';
 import UploadLeafImage from '../pages/Upload';
 import ContactPage from "../pages/ContactUs";
 import HelpUs from "../pages/HelpUs";
-import Data from "../pages/Data"
+import Data from "../pages/Data";
+
 const AllRoutes = () => {
     return (
     <Routes>
@@ -20,6 +21,7 @@ const AllRoutes = () => {
         <Route path="upload" element={<UploadLeafImage />} />
         <Route path="contact" element={<ContactPage />} />
         <Route path="helpus" element={<HelpUs />} />
+        <Route path="data" element={<Data />} />
     </Routes>
     );
 };

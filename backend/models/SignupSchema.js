@@ -5,7 +5,6 @@ let SignupSchema = mongoose.Schema({
     contact :String,
     email : String,
     username : String,
-    name : String,
     password : String,
     address : String,
 }, {timestamps:true})

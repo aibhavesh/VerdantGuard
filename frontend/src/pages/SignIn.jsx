@@ -1,14 +1,17 @@
 import React from 'react';
-import '../../public/assets/bootstrap/css/bootstrap.css';
 import '../App.css';
 import signin_leaf from '../../public/assets/images/signin-removebg-preview.png';
 import leaf_pattern from '../../public/assets/images/green-dust-and-scratches.png';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import SignInSchema from '../schema/SignInSchema';
 import axios from 'axios';
 import { API_URL } from '../constant/API_URL.jsx';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const SignIn = () => {
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -16,24 +19,21 @@ const SignIn = () => {
       password: '',
     },
     validationSchema: SignInSchema,
-    onSubmit: (formData) => {
-      axios.post(`${API_URL}/signinauth`, formData)
-      .then((response)=>{
-        if(response.data.success){
+    onSubmit: async (formData) => {
+      try {
+        const response = await axios.post(`${API_URL}/signinauth`, formData);
+        if (response.data.success) {
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('name', response.data.name);
-          window.location.href = '/upload';
+          toast.success('Login successful!');
+          setTimeout(() => navigate('/upload'), 1000);
         }
-        else{
-          if(response.data.errType === 1){
-            alert('Email ID is incorrect!');
-          }
-          else{
-            alert('Password is incorrect!');
-          }
-        }
-      })
-  }
+      } catch (error) {
+        console.error('Login error:', error);
+        const errorMsg = error.response?.data?.error || 'Invalid email or password';
+        toast.error(errorMsg);
+      }
+    }
   });
 
   return (
@@ -47,6 +47,7 @@ const SignIn = () => {
         minHeight: '100vh',
       }}
     >
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="container mt-5" style={{ maxWidth: '900px' }}>
         <div className="card shadow rounded">
           <div className="row g-0">

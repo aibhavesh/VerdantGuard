@@ -1,8 +1,11 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import  contactSchema  from '../schema/ContactSchema';
+import { API_URL } from '../constant/API_URL';
+import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import '../App.css';
-import '../../public/assets/bootstrap/css/bootstrap.css';
 
 const ContactUs = () => {
   const initialValues = {
@@ -11,19 +14,24 @@ const ContactUs = () => {
     message: '',
   };
 
-  const handleSubmit = async (values, { setSubmitting }) => {
+  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
-      // Add logic to submit the form data to your backend API
-      console.log(values);
-      setSubmitting(false);
+      const response = await axios.post(`${API_URL}/contactus`, values);
+      if (response.data.success) {
+        toast.success('Message sent successfully! We will get back to you soon.');
+        resetForm();
+      }
     } catch (error) {
-      console.error(error);
+      console.error('Error submitting contact form:', error);
+      toast.error(error.response?.data?.error || 'Failed to send message. Please try again.');
+    } finally {
       setSubmitting(false);
     }
   };
 
   return (
     <div className="container my-5">
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="row g-5">
         {/* Left Section */}
         <div className="col-md-6 bg-white p-4 rounded shadow-sm">

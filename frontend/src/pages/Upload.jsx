@@ -3,7 +3,9 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import hackathon_leaf1 from "../../public/assets/images/hackathon_leaf1-removebg-preview.png";
-import { API_URL_IMAGE } from "../constant/API_URL";
+import { API_URL } from "../constant/API_URL";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const UploadSchema = Yup.object({
   leafType: Yup.string().required("Please select a leaf type"),
@@ -13,7 +15,6 @@ const UploadSchema = Yup.object({
 const UploadLeafImage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState(null);
-  const [error, setError] = useState(null);
 
   const formik = useFormik({
     initialValues: {
@@ -23,24 +24,23 @@ const UploadLeafImage = () => {
     validationSchema: UploadSchema,
     onSubmit: async (values) => {
       setIsLoading(true);
-      setError(null);
 
       try {
         const formData = new FormData();
         formData.append("leafType", values.leafType);
         formData.append("image", values.image);
 
-        const response = await axios.post(`${API_URL_IMAGE}/predict`, formData, {
+        const response = await axios.post(`${API_URL}/upload`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
-        // const response2 = await axios.post({API_URL}/upload , formData, {
-        //   headers: { "Content-Type": "multipart/form-data" },  )
 
-        setResult(response.data);
+        setResult(response.data.prediction);
+        toast.success('Image analyzed successfully!');
         console.log("Response:", response.data);
       } catch (err) {
-        setError(err.response?.data?.message || "An error occurred during upload");
         console.error("Upload error:", err);
+        const errorMsg = err.response?.data?.message || "An error occurred during upload";
+        toast.error(errorMsg);
       } finally {
         setIsLoading(false);
       }
@@ -55,6 +55,7 @@ const UploadLeafImage = () => {
 
   return (
     <section className="upload-section">
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="container">
         <div className="row align-items-center justify-content-center">
           <div className="col-lg-6 mb-5 mb-lg-0">
@@ -121,8 +122,6 @@ const UploadLeafImage = () => {
                   </button>
                 </form>
               )}
-
-              {error && <div className="alert alert-danger mt-3">{error}</div>}
             </div>
           </div>
 

@@ -1,11 +1,13 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import SignUpSchema from '../schema/SignUpSchema';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import img from '../../public/assets/images/hackathon_logo-removebg-preview.png';
 import { API_URL } from '../constant/API_URL.jsx';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 function SignUp() {
   const navigate = useNavigate();
   const formik = useFormik({
@@ -19,25 +21,27 @@ function SignUp() {
       address: '',
     },
     validationSchema: SignUpSchema,
-    onSubmit: (formData) => {
-      // Only send required fields (exclude confirmPassword)
-      const { name, contact, email, username, password, address } = formData;
-      axios.post(`${API_URL}/signup`, { name, contact, email, username, password, address })
-        .then((response) => {
-          navigate("/signin");
-          alert("Registration Successful");
-          console.log(response.data);
-        })
-        .catch((error) => {
-          const msg = error.response?.data?.message || 'Registration failed. Please try again.';
-          alert(msg);
-          console.error('Signup error:', error);
-        });
+    onSubmit: async (formData) => {
+      try {
+        // Only send required fields (exclude confirmPassword)
+        const { name, contact, email, username, password, address } = formData;
+        const response = await axios.post(`${API_URL}/signup`, { name, contact, email, username, password, address });
+        
+        if (response.data.success) {
+          toast.success('Registration successful! Redirecting to sign in...');
+          setTimeout(() => navigate("/signin"), 1500);
+        }
+      } catch (error) {
+        console.error('Signup error:', error);
+        const msg = error.response?.data?.error || 'Registration failed. Please try again.';
+        toast.error(msg);
+      }
     },
   });
 
   return (
     <div className="signup-container">
+      <ToastContainer position="top-right" autoClose={3000} />
       <img src={img} alt="Leaf Icon" className="icon" />
       <h2>Sign up</h2>
       <p>Create your free account</p>

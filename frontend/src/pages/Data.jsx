@@ -1,14 +1,17 @@
 import React from 'react';
 import axios from 'axios';
-import { useEffect,useState} from 'react';
+import { useEffect, useState } from 'react';
+import { API_URL } from '../constant/API_URL';
 
 
 const Data = () => {
     let [alluser, setAlluser] = useState([]);
   useEffect(() => {
-    axios.get("http://localhost:3000/api/v1/signup").then((response) => {
+    axios.get(`${API_URL}/signup`).then((response) => {
         setAlluser(response.data);
-    })
+    }).catch(err => {
+        console.error('Error fetching users:', err);
+    });
   },[])
 
   return (

@@ -3,7 +3,6 @@ import numpy as np
 from flask import Flask, request, jsonify
 import tensorflow as tf
 from PIL import Image
-import io
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 
@@ -16,6 +15,7 @@ UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 
 # Ensure upload folder exists
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -24,37 +24,24 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-def example_function(x, y):
-    """
-    Adds two numbers and returns the result.
-
-    Args:
-        x (int): First number
-        y (int): Second number
-
-    Returns:
-        int: Sum of x and y
-    """
-    return x + y
-
 
 # Load the pre-trained model once when the API starts
-MODEL_PATH = "M:\\VerdantGuard\\model\\Potato_Disease_Classification_Model.keras"
+MODEL_PATH = os.path.join(os.path.dirname(__file__), "Potato_Disease_Classification_Model.keras")
 model = tf.keras.models.load_model(MODEL_PATH)
 
 # Define class names (based on your dataset)
-CLASS_NAMES = ['Early Blight', 'Late Blight', 'Healthy']  # Replace with your actual class names
+CLASS_NAMES = ['Early Blight', 'Late Blight', 'Healthy']
 
 # Function to preprocess the image
-def preprocess_image(image):
-    img = Image.open(image).resize((256, 256))
+def preprocess_image(image_path):
+    img = Image.open(image_path).resize((256, 256))
     img_array = tf.keras.preprocessing.image.img_to_array(img)
     img_array = np.expand_dims(img_array, axis=0)
     return img_array
 
 # Prediction function
-def predict(image):
-    img_array = preprocess_image(image)
+def predict(image_path):
+    img_array = preprocess_image(image_path)
     prediction = model.predict(img_array)
     predicted_class = CLASS_NAMES[np.argmax(prediction)]
     confidence = round(np.max(prediction) * 100, 2)
@@ -96,8 +83,21 @@ def predict_endpoint():
 # Health check endpoint
 @app.route('/', methods=['GET'])
 def home():
-    return jsonify({'message': 'Potato Disease Classification API is running'})
+    return jsonify({
+        'message': 'Potato Disease Classification API is running',
+        'version': '1.0.0',
+        'endpoints': {
+            '/predict': 'POST - Upload image for disease prediction',
+            '/health': 'GET - Health check'
+        }
+    })
+
+@app.route('/health', methods=['GET'])
+def health():
+    return jsonify({'status': 'OK', 'model_loaded': model is not None})
+
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    print("🚀 Starting Flask ML API on http://localhost:5000")
+    app.run(debug=True, host='0.0.0.0', port=5000)
     

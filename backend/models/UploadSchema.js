@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose from "../config/conn.js"
 
 const imageSchema = new mongoose.Schema({
   leafType: {

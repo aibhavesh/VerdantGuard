@@ -1,5 +1,6 @@
 flask
+flask-cors
 numpy
 tensorflow
 pillow
-os
+werkzeug
